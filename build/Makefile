@@ -24,8 +24,8 @@ file.o: ../src/file.cpp ../include/file.h ../include/node.h
 
 .PHONY: clean
 clean:
-	rm -f *.o tree
+	rm -f *.o main
 
 .PHONY: all
-all: clean tree
+all: clean main
 
