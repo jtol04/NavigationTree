@@ -20,12 +20,59 @@ public:
 
 private:
     std::unique_ptr<Folder> root;
+
+    /**
+     * @brief Reads the path string and splits it based on '/' delimeter
+     * @param path_to_node The absolute path to be parsed
+     * @return A deque containing the parsed tokens
+     */
     std::deque<std::string> parse_path(const std::string& path_to_node);
+    
+    /**
+     * @brief Traverses the tree and checks the folder specified exists. 
+     * @param tokens parsed path components
+     * @return Pointer to the folder specified, otherwise nullptr if the path is invalid 
+     */
     Folder* get_folder_ptr(std::deque<std::string> tokens);
+
+    /**
+     * @brief Checks if a child exists within a specified folder
+     * @param folder The pointer to the parent folder
+     * @param name The name of the child to be checked 
+     * @return Pointer to the child if found, otherwise nullptr
+     */
     Node* find_child(Folder* folder, const std::string& name);
+
+    /**
+     * @brief Recursively prints the tree node names and indents based on depth
+     * @param folder The pointer to the folder
+     * @param depth The depth of the folder
+     */
     void print_tree_helper(Folder* folder, int depth);
+
+    /**
+     * @brief Checks if the specified node is a file or a folder based on the trailing slash
+     * @note Paths ending in '/' are treated as FOLDER, FILE otherwise
+     * @param path_to_node The path leading to the node to be checked
+     * @return The type of the node (e.g. FILE or FOLDER)
+     */
     NodeType get_type(const std::string& path_to_node);
+
+    /**
+     * @brief Checks if the destination folder is inside the subtree of the origin.
+     * @param origin The node being attempted to be moved
+     * @param dest_folder The destination folder of the move
+     * @return true if dest_folder is a descendant of origin, otherwise false 
+     */
     bool is_subtree(Node* origin, Folder* dest_folder);
+
+    /**
+     * @brief Shared implementation for create_file and create_folder
+     * @param path_to_node The path to the node being created
+     * @param type The type of the node being created
+     * @return true if node was created, otherwise false
+     */
+    bool create_node_helper(const std::string& path_to_node, NodeType type);
 };
 
 #endif

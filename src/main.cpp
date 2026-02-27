@@ -9,6 +9,8 @@ int main() {
     tree.rename_node("Project/src/", "src1");
     tree.create_file("Project/src1/main.py");
     tree.create_folder("Project/src1/models/");
+    tree.delete_node("Project/src1/models/");
+
 
     tree.create_folder("Project/tests/");
     tree.create_file("Project/tests/test_main.py");
@@ -16,9 +18,8 @@ int main() {
     tree.create_file("Project/README.md");
 
 
-    tree.move_node("Project/", "Project/src");
-    tree.delete_node("Project/");
-
+    tree.move_node("Project/src1/", "Project/tests/");
+    
 
     
     
