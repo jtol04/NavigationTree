@@ -32,9 +32,7 @@ Node* Tree::find_child(Folder* folder, const std::string& name) {
     return nullptr; 
 }
 
-Folder* Tree::get_folder_ptr (std::deque<std::string> tokens /*const std::string& path_to_folder*/ ) {
-    // std::deque<std::string> tokens = parse_path(path_to_folder);
-
+Folder* Tree::get_folder_ptr (std::deque<std::string> tokens ) {
     if (tokens.empty()) {
         //std::cerr << "<get_folder_ptr> Error: No path to folder.\n";
         return nullptr;
@@ -94,7 +92,7 @@ bool Tree::create_node_helper(const std::string& path_to_node, NodeType type) {
         parent_folder->children_map[node_name] = std::make_unique<Folder>(node_name);
     }
     parent_folder->children_map[node_name]->parent_folder = parent_folder;
-    std::cout << "node: " << parent_folder->children_map[node_name]->get_id() << " created.\n";
+    // std::cout << "node: " << parent_folder->children_map[node_name]->get_id() << " created.\n";
 
     return true;
 }
@@ -251,6 +249,7 @@ void Tree::print_tree_helper(Folder* folder, int depth) {
     for (auto it = children_map.begin(); it != children_map.end(); ++it) {
         if (it->second->type == NodeType::FOLDER) {
             Folder* child_folder = dynamic_cast<Folder*>(it->second.get());
+            
             print_tree_helper(child_folder, depth + 1);
         } else {
             std::string file_indent((depth + 1) * 2 , ' ');
