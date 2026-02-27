@@ -21,7 +21,7 @@ public:
     
     void print_tree();
     bool save_tree(const std::string& path_to_file);
-    bool load_tree(const std::string& path_to_file);
+    bool load_tree(const std::string& path_to_json);
 
 private:
     std::unique_ptr<Folder> root;
@@ -80,6 +80,8 @@ private:
     bool create_node_helper(const std::string& path_to_node, NodeType type);
 
     json folder_to_json(Folder* folder);
+    void json_to_node(Folder* parent_folder, const json& j);
+
 };
 
 #endif

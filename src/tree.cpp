@@ -259,7 +259,7 @@ void Tree::print_tree_helper(Folder* folder, int depth) {
 json Tree::folder_to_json(Folder* folder) {
     json j;
     j["name"] = folder->name;
-    j["type"] = "folder";
+    j["type"] = "FOLDER";
     j["unique_id"] = folder->get_id();
     j["children"] = json::array();
 
@@ -270,7 +270,7 @@ json Tree::folder_to_json(Folder* folder) {
         } else {
             json file;
             file["name"] = node->name;
-            file["type"] = "file";
+            file["type"] = "FILE";
             file["unique_id"] = node->get_id();
             j["children"].push_back(file);
         }
@@ -291,7 +291,30 @@ bool Tree::save_tree(const std::string& path_to_file) {
     return true;
 }
 
-bool Tree::load_tree(const std::string& path_to_file) {
-    return false;
+void Tree::json_to_node(Folder* parent_folder, const json& j) {
+    for (auto& child : j["children"]) {
+        std::string name = child["name"];
+        if (child["type"] == "FOLDER") {
+            parent_folder->children_map[name] = std::make_unique<Folder>(name);
+            parent_folder->children_map[name]->parent_folder = parent_folder;
+            Folder* child_folder = dynamic_cast<Folder*>(parent_folder->children_map[name].get());
+            json_to_node(child_folder, child);
+        } else {
+            parent_folder->children_map[name] = std::make_unique<File>(name);
+            parent_folder->children_map[name]->parent_folder = parent_folder;
+        }
+    }
+}
+bool Tree::load_tree(const std::string& path_to_json) {
+    std::ifstream input(path_to_json);
+    if (!input) {
+        std::cerr << "<load> Error: Could not open file.\n";
+    }
+
+    json j = json::parse(input);
+    root = std::make_unique<Folder>(j["name"]);
+    json_to_node(root.get(), j);
+
+    return true;
 }
 

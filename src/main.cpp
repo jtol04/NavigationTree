@@ -12,8 +12,12 @@ int main() {
     tree.create_folder("/Project/tests/");
     tree.create_file("/Project/tests/test_main.py");
     tree.create_file("/Project/README.md");
+    tree.create_file("/Project/main.md");
     tree.move_node("/Project/src1/", "/Project/tests/");
-    tree.print_tree();
 
     tree.save_tree("tree.json");
+
+    Tree new_tree("temp");
+    new_tree.load_tree("tree.json");
+    new_tree.print_tree();
 } 
