@@ -1,12 +1,12 @@
 # NavigationTree
-A navigation tree implementation using C++
+A navigation tree implementation using C++. All basic features have been implemented. Optional save and load tree features have also been implemented.
 
 ## Folder Structure
     
 ```plaintext
     NavigationTree/
     ├── build/                   
-    │   └── Makefile             # Build config
+    │   └── Makefile             # Build configuration
     ├── include/                 # Header files
     │   ├── file.h               # File class declaration
     │   ├── folder.h             # Folder class declaration
@@ -24,28 +24,37 @@ A navigation tree implementation using C++
 ```
 
 ## References
-1. https://c2cxx.github.io/www/2025-9/
+1. https://c2cxx.github.io/www/2025-9/ (previous semester class; comprehensize C++ resource)
 2. https://en.cppreference.com/w/cpp/language/enum.html
-2. https://google.github.io/googletest/primer.html
+3. https://google.github.io/googletest/primer.html (reference for Google Unit Tests)
+4. https://github.com/nlohmann/json (reference for saving the Tree as JSON)
 
-## Build demo
+
+## Dependencies
+### Mac
+```bash
+brew install nlohmann-json
+brew install googletest
+```
+
+
+### Linux
+```bash
+sudo apt-get install nlohmann-json3-dev
+sudo apt-get install libgtest-dev
+```
+
+## Build and run demo
 ```bash
 cd build
 make
-```
-
-## Run demo
-```bash
 ./main
 ```
 
-## Build test
+
+## Build and run test (Google Unit Test)
 ```bash
 cd build
 make test
-```
-
-## Run test
-```bash
 ./test
 ```
