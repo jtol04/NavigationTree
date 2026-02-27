@@ -79,8 +79,19 @@ private:
      */
     bool create_node_helper(const std::string& path_to_node, NodeType type);
 
+    /**
+     * @brief Converts the specified folder into a JSON object
+     * @param folder The pointer to the folder to be converted into a json
+     * @return JSON of the folder
+     */
     json folder_to_json(Folder* folder);
-    void json_to_node(Folder* parent_folder, const json& j);
+
+    /**
+     * @brief Reconstructs the tree from JSON object
+     * @param parnet_folder The folder where children will be inserted
+     * @param j The JSON object representing parent folder
+     */
+    bool json_to_node(Folder* parent_folder, const json& j);
 
 };
 

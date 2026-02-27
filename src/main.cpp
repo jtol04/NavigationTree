@@ -1,4 +1,5 @@
 #include "tree.h"
+#include <iostream>
 
 int main() {
 
@@ -15,9 +16,13 @@ int main() {
     tree.create_file("/Project/main.md");
     tree.move_node("/Project/src1/", "/Project/tests/");
 
+    std::cout << "-------------------------------------\n";
+    tree.print_tree();
     tree.save_tree("tree.json");
 
     Tree new_tree("temp");
     new_tree.load_tree("tree.json");
+    std::cout << "-------------------------------------\n";
     new_tree.print_tree();
+
 } 

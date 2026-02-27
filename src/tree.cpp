@@ -284,14 +284,19 @@ bool Tree::save_tree(const std::string& path_to_file) {
     std::ofstream output(path_to_file);
 
     if (!output) {
-        std::cerr << "<save> Error: Could not open file.\n";
+        std::cerr << "<save_tree> Error: Could not open file.\n";
         return false;
     }
     output << root.dump(2);
     return true;
 }
 
-void Tree::json_to_node(Folder* parent_folder, const json& j) {
+bool Tree::json_to_node(Folder* parent_folder, const json& j) {
+    if (!j.contains("name") || !j.contains("unique_id") || j["type"] != "FOLDER") {
+        std::cerr << "<json_to_node> Error: Invalid JSON object.\n";
+        return false;
+    }
+
     for (auto& child : j["children"]) {
         std::string name = child["name"];
         if (child["type"] == "FOLDER") {
@@ -304,17 +309,20 @@ void Tree::json_to_node(Folder* parent_folder, const json& j) {
             parent_folder->children_map[name]->parent_folder = parent_folder;
         }
     }
-}
-bool Tree::load_tree(const std::string& path_to_json) {
-    std::ifstream input(path_to_json);
-    if (!input) {
-        std::cerr << "<load> Error: Could not open file.\n";
-    }
-
-    json j = json::parse(input);
-    root = std::make_unique<Folder>(j["name"]);
-    json_to_node(root.get(), j);
-
     return true;
 }
 
+bool Tree::load_tree(const std::string& path_to_json) {
+    std::ifstream input(path_to_json);
+    if (!input) {
+        std::cerr << "<load_tree> Error: Could not open file.\n";
+        return false;
+    }
+    json j = json::parse(input);
+    root = std::make_unique<Folder>(j["name"]);
+    if (!json_to_node(root.get(), j)) {
+        std::cerr << "<load_tree> Error: Could not load tree.\n";
+        return false;
+    }
+    return true;
+}
