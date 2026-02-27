@@ -34,7 +34,7 @@ test.o: ../test/test.cpp ../include/tree.h
 
 .PHONY: clean
 clean:
-	rm -f *.o main
+	rm -f *.o main tests
 
 .PHONY: all
-all: clean main
+all: clean main test
