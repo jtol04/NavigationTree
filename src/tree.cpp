@@ -14,8 +14,6 @@ std::deque<std::string> Tree::parse_path(const std::string& path_to_node) {
     std::string token;
     std::deque<std::string> tokens;
 
-    // /root/path/node.cpp
-    // tokens = [root, path, node.cpp]
     while (std::getline(ss, token, '/')) {
         if (!token.empty()) {
             tokens.push_back(token);
@@ -257,3 +255,43 @@ void Tree::print_tree_helper(Folder* folder, int depth) {
         }
     }
 }
+
+json Tree::folder_to_json(Folder* folder) {
+    json j;
+    j["name"] = folder->name;
+    j["type"] = "folder";
+    j["unique_id"] = folder->get_id();
+    j["children"] = json::array();
+
+    for (auto& [name, node] : folder->children_map) {
+        if (node->type == NodeType::FOLDER) {
+            Folder* child_folder = dynamic_cast<Folder*>(node.get());
+            j["children"].push_back(folder_to_json(child_folder));
+        } else {
+            json file;
+            file["name"] = node->name;
+            file["type"] = "file";
+            file["unique_id"] = node->get_id();
+            j["children"].push_back(file);
+        }
+    }
+    return j;
+}
+
+bool Tree::save_tree(const std::string& path_to_file) {
+    Folder* folder = root.get();
+    json root = folder_to_json(folder);
+    std::ofstream output(path_to_file);
+
+    if (!output) {
+        std::cerr << "<save> Error: Could not open file.\n";
+        return false;
+    }
+    output << root.dump(2);
+    return true;
+}
+
+bool Tree::load_tree(const std::string& path_to_file) {
+    return false;
+}
+

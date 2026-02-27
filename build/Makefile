@@ -3,7 +3,7 @@ GTEST_LIB = /opt/homebrew/lib
 GTEST_FLAGS = -lgtest -lgtest_main -pthread
 
 CXX = g++
-CXXFLAGS = -g -Wall -std=c++17 -I../include
+CXXFLAGS = -g -Wall -std=c++17 -I../include -I/opt/homebrew/include
 
 .PHONY: default
 default: main
@@ -27,14 +27,14 @@ file.o: ../src/file.cpp ../include/file.h ../include/node.h
 	$(CXX) $(CXXFLAGS) -c ../src/file.cpp
 
 test: test.o tree.o node.o folder.o file.o
-	$(CXX) $(CXXFLAGS) -L$(GTEST_LIB) -o tests test.o tree.o node.o folder.o file.o $(GTEST_FLAGS)
+	$(CXX) $(CXXFLAGS) -L$(GTEST_LIB) -o test test.o tree.o node.o folder.o file.o $(GTEST_FLAGS)
 
 test.o: ../test/test.cpp ../include/tree.h
 	$(CXX) $(CXXFLAGS) -I$(GTEST_INCLUDE) -c ../test/test.cpp
 
 .PHONY: clean
 clean:
-	rm -f *.o main tests
+	rm -f *.o main test
 
 .PHONY: all
 all: clean main test

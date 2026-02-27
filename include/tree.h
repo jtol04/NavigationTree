@@ -6,6 +6,9 @@
 #include <deque>
 #include "folder.h"
 #include "file.h"
+#include <fstream>
+#include <nlohmann/json.hpp>
+using json = nlohmann::json;
 
 class Tree {
 public:
@@ -15,8 +18,10 @@ public:
     bool delete_node(const std::string& path_to_node);
     bool rename_node(const std::string& path_to_node, const std::string& new_node_name);
     bool move_node(const std::string& path_to_node, const std::string& path_to_dest_folder);
-
+    
     void print_tree();
+    bool save_tree(const std::string& path_to_file);
+    bool load_tree(const std::string& path_to_file);
 
 private:
     std::unique_ptr<Folder> root;
@@ -73,6 +78,8 @@ private:
      * @return true if node was created, otherwise false
      */
     bool create_node_helper(const std::string& path_to_node, NodeType type);
+
+    json folder_to_json(Folder* folder);
 };
 
 #endif
